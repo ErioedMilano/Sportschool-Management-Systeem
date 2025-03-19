@@ -8,5 +8,34 @@ public class Medewerker {
     private String functie;
     private List<Les> lessen;
 
-    // Constructor, getters, setters
+    Medewerker(int id,String naam,String functie,List<Les> lessen){
+        this.id = id;
+        this.naam = naam;
+        this.functie = functie;
+        this.lessen = lessen;
+    }
+    public int getId(){
+        return id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
+    public String getNaam(){
+        return naam;
+    }
+    public void setNaam(String naam){
+        this.naam = naam;
+    }
+    public String getFunctie(){
+        return functie;
+    }
+    public void setFunctie(String functie){
+        this.functie = functie;
+    }
+    public List<Les> getLessen(){
+        return lessen;
+    }
+    public void setLessen(List<Les> lessen){
+        this.lessen = lessen;
+    }
 }
