@@ -1,7 +1,10 @@
 package gym;
 
+import gym.models.*;
 import gym.services.LidService;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -36,17 +39,40 @@ public class Main {
         while (!terug){
             System.out.println("\n--- LEDENBEHEER ---");
             System.out.println("1. Nieuw lid registreren");
+            System.out.println("2. Alle leden tonen");
             System.out.println("5. Terug naar hoofdmenu");
             System.out.print("Keuze: ");
 
-            switch (scanner.nextLine()){
-                case "" -> registreerLid();
-                case "5" -> terug = true;
+            int keuze = scanner.nextInt();
+            switch (keuze){
+                case 1 -> registreerLid();
+                case 2 -> terug = true;
                 default -> System.out.println("Ongeldige keuze");
             }
         }
     }
     private static void registreerLid(){
 
+        try {
+            System.out.println("naam: ");
+            String naam = scanner.nextLine();
+
+            System.out.println("email: ");
+            String email = scanner.nextLine();
+
+            System.out.println("geboortedatum(jaar-maand-dag)");
+            LocalDate geboortedatum = LocalDate.parse(scanner.nextLine());
+
+            Lid lid = new Lid(naam,email,geboortedatum);
+            lidService.registreerLid(lid);
+
+            System.out.println("\nLid succesvol geregistreerd!");
+
+        }catch (DateTimeException e){
+            System.out.println("\nOngeldige datumindeling!");
+
+        }catch (Exception e){
+            System.out.println("\nFout: " + e.getMessage());
+        }
     }
 }

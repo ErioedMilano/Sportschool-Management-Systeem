@@ -4,6 +4,7 @@ import gym.DatabaseConnection;
 import gym.models.Lid;
 
 import java.sql.*;
+import java.util.List;
 
 public class LidDAO {
 
@@ -28,6 +29,10 @@ public class LidDAO {
                 }
             }
         }
+
+    }
+    // READ (all)
+    public List<Lid> getAlleLeden() throws SQLException {
 
     }
 }
