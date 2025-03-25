@@ -14,7 +14,7 @@ public class LidDAO {
     public void addLid(Lid lid) throws SQLException {
 
 
-        String sql = "INSERT INTO leden (naam, email, geboortedatum) VALEUS (?, ?,?)" ;
+        String sql = "INSERT INTO leden (naam, email, geboortedatum) VALUES (?, ?, ?)" ;
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){

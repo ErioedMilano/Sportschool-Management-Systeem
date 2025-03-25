@@ -47,17 +47,16 @@ public class Main {
             System.out.println("5. Terug naar hoofdmenu");
             System.out.print("Keuze: ");
 
-            int keuze = scanner.nextInt();
+            String keuze = scanner.nextLine();
             switch (keuze){
-                case 1 -> registreerLid();
-                case 2 -> toonAlleLeden();
-                case 5 -> terug = true;
+                case "1" -> registreerLid();
+                case "2" -> toonAlleLeden();
+                case "5"-> terug = true;
                 default -> System.out.println("Ongeldige keuze");
             }
         }
     }
     private static void registreerLid(){
-
         try {
             System.out.print("\nNaam: ");
             String naam = scanner.nextLine();
