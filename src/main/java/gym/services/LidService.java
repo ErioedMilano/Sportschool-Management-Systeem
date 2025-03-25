@@ -4,6 +4,7 @@ import gym.dao.LidDAO;
 import gym.models.Lid;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class LidService {
 
@@ -13,7 +14,15 @@ public class LidService {
         try {
             lidDAO.addLid(lid);
         } catch (SQLException e) {
-            System.out.println("Databasefout: " + e.getMessage());
+            System.err.println("Databasefout: " + e.getMessage());
         }
+    }
+    public List<Lid> getAlleLeden(){
+        try {
+            return lidDAO.getAlleLeden();
+        }catch (SQLException e){
+            System.err.println("Databasefout: " + e.getMessage());
+        }
+        return List.of();
     }
 }

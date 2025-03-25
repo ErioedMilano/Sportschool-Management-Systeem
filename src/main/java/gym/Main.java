@@ -5,6 +5,7 @@ import gym.services.LidService;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -21,6 +22,7 @@ public class Main {
             String keuze = scanner.nextLine();
 
             switch (keuze){
+                case "1" -> beheerLeden();
                 case "5" -> running = false;
                 default -> System.out.println("ongeldige keuze");
             }
@@ -30,6 +32,8 @@ public class Main {
     private static void printHoofdmenu(){
         System.out.println("\n***SPORTSCHOOL-BEHEERSYSTEEM***");
         System.out.println("1. Ledenbeheer");
+        System.out.println("5. Afsluiten");
+        System.out.print("Maak uw keuze: ");
     }
     //**********Ledenbeheer**********
     private static void beheerLeden(){
@@ -46,7 +50,8 @@ public class Main {
             int keuze = scanner.nextInt();
             switch (keuze){
                 case 1 -> registreerLid();
-                case 2 -> terug = true;
+                case 2 -> toonAlleLeden();
+                case 5 -> terug = true;
                 default -> System.out.println("Ongeldige keuze");
             }
         }
@@ -54,13 +59,13 @@ public class Main {
     private static void registreerLid(){
 
         try {
-            System.out.println("naam: ");
+            System.out.print("\nNaam: ");
             String naam = scanner.nextLine();
 
-            System.out.println("email: ");
+            System.out.print("Email: ");
             String email = scanner.nextLine();
 
-            System.out.println("geboortedatum(jaar-maand-dag)");
+            System.out.print("Geboortedatum(jaar-maand-dag)");
             LocalDate geboortedatum = LocalDate.parse(scanner.nextLine());
 
             Lid lid = new Lid(naam,email,geboortedatum);
@@ -73,6 +78,18 @@ public class Main {
 
         }catch (Exception e){
             System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void toonAlleLeden(){
+        List<Lid> leden = lidService.getAlleLeden();
+        if (leden.isEmpty()){
+            System.out.println("\nGeen leden gevonden.");
+            return;
+        }
+        System.out.println("\n--- ALLE LEDEN ---");
+        for (Lid lid : leden){
+            System.out.printf("ID: %d | Naam: %s | Email: %s | Geboortedatum: %s%n",
+                    lid.getId(), lid.getNaam(), lid.getEmail(), lid.getGeboortedatum());
         }
     }
 }
