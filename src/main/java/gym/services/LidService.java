@@ -25,4 +25,14 @@ public class LidService {
         }
         return List.of();
     }
+    // UPDATE
+    public void updateLid(Lid lid) {
+        try {
+            lidDAO.updateLid(lid);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Validatiefout: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Databasefout: " + e.getMessage());
+        }
+    }
 }

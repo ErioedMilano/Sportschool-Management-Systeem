@@ -53,4 +53,18 @@ public class LidDAO {
         }
         return leden;
     }
+    // UPDATE
+    public void updateLid(Lid lid) throws SQLException {
+        String sql = "UPDATE leden SET naam = ?, email = ?, geboortedatum = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, lid.getNaam());
+            stmt.setString(2, lid.getEmail());
+            stmt.setDate(3, Date.valueOf(lid.getGeboortedatum()));
+            stmt.setInt(4, lid.getId());
+
+            stmt.executeUpdate();
+        }
+    }
 }
