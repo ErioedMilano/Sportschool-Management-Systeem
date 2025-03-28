@@ -88,7 +88,8 @@ public class Main {
         System.out.println("\n--- ALLE LEDEN ---");
         for (Lid lid : leden){
             System.out.printf("ID: %d | Naam: %s | Email: %s | Geboortedatum: %s%n",
-                    lid.getId(), lid.getNaam(), lid.getEmail(), lid.getGeboortedatum());
+                    lid.getId(), lid.getNaam(), lid.getEmail(), lid.getGeboortedatum())
+            ;
         }
     }
 }
