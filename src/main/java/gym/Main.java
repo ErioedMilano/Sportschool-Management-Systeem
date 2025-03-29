@@ -44,6 +44,7 @@ public class Main {
             System.out.println("\n--- LEDENBEHEER ---");
             System.out.println("1. Nieuw lid registreren");
             System.out.println("2. Alle leden tonen");
+            System.out.println("3. Lidgegevens wijzigen");
             System.out.println("5. Terug naar hoofdmenu");
             System.out.print("Keuze: ");
 
@@ -51,6 +52,7 @@ public class Main {
             switch (keuze){
                 case "1" -> registreerLid();
                 case "2" -> toonAlleLeden();
+                case "3" -> wijzigLid();
                 case "5"-> terug = true;
                 default -> System.out.println("Ongeldige keuze");
             }
@@ -88,8 +90,39 @@ public class Main {
         System.out.println("\n--- ALLE LEDEN ---");
         for (Lid lid : leden){
             System.out.printf("ID: %d | Naam: %s | Email: %s | Geboortedatum: %s%n",
-                    lid.getId(), lid.getNaam(), lid.getEmail(), lid.getGeboortedatum())
-            ;
+                    lid.getId(), lid.getNaam(), lid.getEmail(), lid.getGeboortedatum());
+        }
+    }
+    private static void wijzigLid() {
+        try {
+            System.out.print("\nLid ID: ");
+            int id = leesInt();
+
+            System.out.print("Nieuwe naam: ");
+            String nieuweNaam = scanner.nextLine();
+
+            System.out.print("Nieuwe email: ");
+            String nieuweEmail = scanner.nextLine();
+
+            System.out.print("Nieuwe geboortedatum (jjjj-mm-dd): ");
+            LocalDate nieuweGeboortedatum = LocalDate.parse(scanner.nextLine());
+
+            Lid lid = new Lid(nieuweNaam, nieuweEmail, nieuweGeboortedatum);
+            lid.setId(id);
+            lidService.updateLid(lid);
+            System.out.println("\nLidgegevens succesvol gewijzigd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    // =============== HELPER METHODEN ===============
+    private static int leesInt() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.print("Ongeldig getal, probeer opnieuw: ");
+            }
         }
     }
 }
