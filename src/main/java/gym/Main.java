@@ -45,6 +45,7 @@ public class Main {
             System.out.println("1. Nieuw lid registreren");
             System.out.println("2. Alle leden tonen");
             System.out.println("3. Lidgegevens wijzigen");
+            System.out.println("4. Lid verwijderen");
             System.out.println("5. Terug naar hoofdmenu");
             System.out.print("Keuze: ");
 
@@ -53,6 +54,7 @@ public class Main {
                 case "1" -> registreerLid();
                 case "2" -> toonAlleLeden();
                 case "3" -> wijzigLid();
+                case "4" -> verwijderLid();
                 case "5"-> terug = true;
                 default -> System.out.println("Ongeldige keuze");
             }
@@ -111,6 +113,20 @@ public class Main {
             lid.setId(id);
             lidService.updateLid(lid);
             System.out.println("\nLidgegevens succesvol gewijzigd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void verwijderLid() {
+        try {
+            System.out.print("\nLid ID: ");
+            int id = leesInt();
+
+            System.out.print("Weet u het zeker? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                lidService.verwijderLid(id);
+                System.out.println("\nLid succesvol verwijderd!");
+            }
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }

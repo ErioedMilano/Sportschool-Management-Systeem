@@ -35,4 +35,13 @@ public class LidService {
             System.err.println("Databasefout: " + e.getMessage());
         }
     }
+    // DELETE
+    public void verwijderLid(int id) {
+        try {
+            // Verwijder eerst gekoppelde data
+            lidDAO.deleteLid(id);
+        } catch (SQLException e) {
+            System.err.println("Databasefout: " + e.getMessage());
+        }
+    }
 }
