@@ -8,13 +8,14 @@ public class Abonnement {
     private double maandelijkseKosten;
     private LocalDate startdatum;
     private LocalDate einddatum;
+    private int lidId;
 
-    Abonnement(int id,String type,double maandelijkseKosten,LocalDate startdatum,LocalDate einddatum){
-        this.id = id;
+    public Abonnement(String type,double maandelijkseKosten,LocalDate startdatum,LocalDate einddatum,int lidId){
         this.type = type;
         this.maandelijkseKosten = maandelijkseKosten;
         this.startdatum = startdatum;
         this.einddatum = einddatum;
+        this.lidId = lidId;
     }
     public int getId(){
         return id;
@@ -45,5 +46,11 @@ public class Abonnement {
     }
     public void setEinddatum(LocalDate einddatum){
         this.einddatum = einddatum;
+    }
+    public int getLidId(){
+        return lidId;
+    }
+    public void setLidId(int lidId){
+        this.lidId = lidId;
     }
 }

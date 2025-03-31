@@ -1,16 +1,19 @@
 package gym;
 
 import gym.models.*;
+import gym.services.AbonnementService;
 import gym.services.LidService;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final LidService lidService = new LidService();
+    private static final AbonnementService abonnementservice = new AbonnementService();
 
     public static void main(String[] args){
 
@@ -32,6 +35,7 @@ public class Main {
     private static void printHoofdmenu(){
         System.out.println("\n***SPORTSCHOOL-BEHEERSYSTEEM***");
         System.out.println("1. Ledenbeheer");
+        System.out.println("2. Abonnementenbeheer");
         System.out.println("5. Afsluiten");
         System.out.print("Maak uw keuze: ");
     }
@@ -50,13 +54,14 @@ public class Main {
             System.out.print("Keuze: ");
 
             String keuze = scanner.nextLine();
+
             switch (keuze){
                 case "1" -> registreerLid();
                 case "2" -> toonAlleLeden();
                 case "3" -> wijzigLid();
                 case "4" -> verwijderLid();
-                case "5"-> terug = true;
-                default -> System.out.println("Ongeldige keuze");
+                case "5" -> terug = true;
+                default  -> System.out.println("Ongeldige keuze");
             }
         }
     }
@@ -122,12 +127,53 @@ public class Main {
             System.out.print("\nLid ID: ");
             int id = leesInt();
 
-            System.out.print("Weet u het zeker? (j/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("j")) {
+            System.out.print("Weet u het zeker? (ja/nee): ");
+            if (scanner.nextLine().equalsIgnoreCase("ja")) {
                 lidService.verwijderLid(id);
                 System.out.println("\nLid succesvol verwijderd!");
             }
         } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    // =============== ABONNEMENTENBEHEER ===============
+    private static void beheerAbonnomenten(){
+
+        boolean terug = false;
+        while (!terug){
+
+            System.out.println("\n--- ABONNEMENTENBEHEER ---");
+            System.out.println("1. Nieuw abonnement");
+
+            switch (scanner.nextLine()){
+                case "7" -> terug = true;
+                default -> System.out.println("Ongeldige keuze!");
+            }
+        }
+    }
+
+    private static void registreerAbonnement(){
+        try {
+            System.out.print("\nLid ID: ");
+            int lidId = leesInt();
+
+            System.out.print("Type (BASIC/PREMIUM): ");
+            String type = scanner.nextLine();
+
+            System.out.print("Maandelijkse kosten: ");
+            double kosten = leesDouble();
+
+            System.out.print("Startdatum (jjjj-mm-dd): ");
+            LocalDate start = leesDatum();
+
+            System.out.print("Einddatum (jjjj-mm-dd): ");
+            LocalDate eind = leesDatum();
+
+            Abonnement abonnement = new Abonnement(type,kosten,start,eind,lidId);
+            abonnementservice.registreerAbonnement(abonnement);
+            System.out.println("\nAbonnement succesvol geregistreerd!");
+        }catch(Exception e){
             System.out.println("\nFout: " + e.getMessage());
         }
     }
@@ -138,6 +184,25 @@ public class Main {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.print("Ongeldig getal, probeer opnieuw: ");
+            }
+        }
+    }
+    private static double leesDouble() {
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.print("Ongeldig bedrag, probeer opnieuw: ");
+            }
+        }
+    }
+    private static LocalDate leesDatum() {
+        while (true) {
+            try {
+                System.out.print("Datum (jjjj-mm-dd): ");
+                return LocalDate.parse(scanner.nextLine());
+            } catch (DateTimeParseException e) {
+                System.out.println("Ongeldige datum!");
             }
         }
     }
