@@ -26,6 +26,7 @@ public class Main {
 
             switch (keuze){
                 case "1" -> beheerLeden();
+                case "2" -> beheerAbonnomenten();
                 case "5" -> running = false;
                 default -> System.out.println("ongeldige keuze");
             }
@@ -145,8 +146,11 @@ public class Main {
 
             System.out.println("\n--- ABONNEMENTENBEHEER ---");
             System.out.println("1. Nieuw abonnement");
+            System.out.println("2. Toon alle abonnementen");
 
             switch (scanner.nextLine()){
+                case "1" -> registreerAbonnement();
+                case "2" -> toonAlleAbonnementen();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -174,6 +178,22 @@ public class Main {
             abonnementservice.registreerAbonnement(abonnement);
             System.out.println("\nAbonnement succesvol geregistreerd!");
         }catch(Exception e){
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void toonAlleAbonnementen() {
+        try {
+            List<Abonnement> abonnementen = abonnementservice.getAllAbonnementen();
+            if (abonnementen.isEmpty()) {
+                System.out.println("\nGeen abonnementen gevonden.");
+                return;
+            }
+            System.out.println("\n--- ALLE ABONNEMENTEN ---");
+            for (Abonnement a : abonnementen) {
+                System.out.printf("ID: %d | Type: %s | Lid ID: %d | Kosten: €%.2f%n",
+                        a.getId(), a.getType(), a.getLidId(), a.getMaandelijkseKosten());
+            }
+        } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }
     }

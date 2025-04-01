@@ -4,6 +4,8 @@ import gym.DatabaseConnection;
 import gym.models.Abonnement;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbonnementDAO {
 
@@ -11,7 +13,7 @@ public class AbonnementDAO {
 
     public void addAbonnement(Abonnement abonnement) throws SQLException {
 
-        String sql = "INSERT INTO abonnementen(type,maandelijkse_kosten,startdatum,eindatum,lid_id) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO abonnementen(type,maandelijkse_kosten,startdatum,einddatum,lid_id) VALUES(?,?,?,?,?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
@@ -28,5 +30,28 @@ public class AbonnementDAO {
                 }
             }
         }
+    }
+    // READ (alle abonnementen)
+    public List<Abonnement> getAllAbonnementen() throws SQLException {
+        List<Abonnement> abonnementen = new ArrayList<>();
+        String sql = "SELECT * FROM abonnementen";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                Abonnement abonnement = new Abonnement(
+                        resultSet.getString("type"),
+                        resultSet.getDouble("maandelijkse_kosten"),
+                        resultSet.getDate("startdatum").toLocalDate(),
+                        resultSet.getDate("einddatum").toLocalDate(),
+                        resultSet.getInt("lid_id")
+                );
+                abonnement.setId(resultSet.getInt("id"));
+                abonnementen.add(abonnement);
+            }
+        }
+        return abonnementen;
     }
 }

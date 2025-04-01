@@ -4,6 +4,7 @@ import gym.dao.AbonnementDAO;
 import gym.models.Abonnement;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AbonnementService {
 
@@ -19,4 +20,16 @@ public class AbonnementService {
             System.err.println("Databasefout: " + e.getMessage());
         }
     }
+    public List<Abonnement> getAllAbonnementen() {
+        try {
+            return abonnementDAO.getAllAbonnementen();
+        } catch (SQLException e) {
+            handleError("Ophalen abonnementen mislukt", e);
+            return List.of();
+        }
+    }
+    private void handleError(String message, SQLException e) {
+        System.err.println(message + ": " + e.getMessage());
+    }
 }
+
