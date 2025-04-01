@@ -9,6 +9,7 @@ import gym.services.MedewerkerService;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
@@ -321,6 +322,11 @@ public class Main {
 
             switch (scanner.nextLine()){
                 case "1" -> planLes();
+                case "2" -> toonLessen();
+                case "3" -> wijzigLes();
+                case "4" -> annuleerLes();
+                case "5" -> schrijfIn();
+                case "6" -> schrijfUit();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -331,8 +337,10 @@ public class Main {
             System.out.print("\nLesnaam: ");
             String naam = scanner.nextLine();
 
-            System.out.print("Datum/tijd (jjjj-mm-ddTHH:mm): ");
-            LocalDateTime tijd = LocalDateTime.parse(scanner.nextLine());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            System.out.print("Datum/tijd (dd-MM-yyyy HH:mm): ");
+            LocalDateTime tijd = LocalDateTime.parse(scanner.nextLine(), formatter);
+
 
             System.out.print("Capaciteit: ");
             int capaciteit = leesInt();
@@ -344,6 +352,97 @@ public class Main {
 
             lesService.planLes(les, medewerkerId);
             System.out.println("\nLes succesvol gepland!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void toonLessen() {
+        try {
+            List<Les> lessen = lesService.getAllLessen();
+            if (lessen.isEmpty()) {
+                System.out.println("\nGeen lessen gevonden.");
+                return;
+            }
+            System.out.println("\n--- ALLE LESSEN ---");
+            for (Les les : lessen) {
+                System.out.printf("ID: %d | %s | %s | Cap: %d | Trainer: %s (ID: %d)%n",
+                        les.getId(), les.getNaam(), les.getTijdslot(),
+                        les.getCapaciteit(), les.getMedewerker().getNaam(), les.getMedewerker().getId());
+            }
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void wijzigLes() {
+        try {
+            System.out.print("\nLes ID: ");
+            int id = leesInt();
+
+            Les les = lesService.getLesById(id);
+            if (les == null) {
+                System.out.println("\nLes niet gevonden!");
+                return;
+            }
+
+            System.out.print("Nieuwe naam: ");
+            les.setNaam(scanner.nextLine());
+
+            System.out.print("Nieuwe datum/tijd (jjjj-mm-ddTHH:mm): ");
+            les.setTijdslot(LocalDateTime.parse(scanner.nextLine()));
+
+            System.out.print("Nieuwe capaciteit: ");
+            les.setCapaciteit(leesInt());
+
+            System.out.print("Nieuwe medewerker ID: ");
+            int medewerkerId = leesInt();
+            les.getMedewerker().setId(medewerkerId);
+
+            lesService.updateLes(les);
+            System.out.println("\nLes succesvol gewijzigd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void annuleerLes() {
+        try {
+            System.out.print("\nLes ID: ");
+            int id = leesInt();
+
+            System.out.print("Weet u het zeker? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                lesService.annuleerLes(id);
+                System.out.println("\nLes geannuleerd!");
+            }
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    private static void schrijfIn() {
+        try {
+            System.out.print("\nLid ID: ");
+            int lidId = leesInt();
+
+            System.out.print("Les ID: ");
+            int lesId = leesInt();
+
+            lesService.meldAanVoorLes(lidId, lesId);
+            System.out.println("\nInschrijving succesvol!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    private static void schrijfUit() {
+        try {
+            System.out.print("\nLid ID: ");
+            int lidId = leesInt();
+
+            System.out.print("Les ID: ");
+            int lesId = leesInt();
+
+            lesService.verwijderUitLes(lidId, lesId);
+            System.out.println("\nUitschrijving succesvol!");
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }

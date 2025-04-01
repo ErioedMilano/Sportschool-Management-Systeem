@@ -8,7 +8,7 @@ public class Medewerker {
     private String functie;
     private List<Les> lessen;
 
-    Medewerker(int id,String naam,String functie,List<Les> lessen){
+    public Medewerker(String naam,String functie){
         this.id = id;
         this.naam = naam;
         this.functie = functie;
