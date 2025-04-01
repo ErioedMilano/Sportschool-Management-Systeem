@@ -147,10 +147,17 @@ public class Main {
             System.out.println("\n--- ABONNEMENTENBEHEER ---");
             System.out.println("1. Nieuw abonnement");
             System.out.println("2. Toon alle abonnementen");
+            System.out.println("3. Zoek abonnement op ID");
+            System.out.println("4. Zoek abonnement op Lid ID");
+            System.out.println("5. Wijzig abonnement");
+            System.out.println("6. Verwijder abonnement");
+            System.out.println("7. Terug naar hoofdmenu");
+            System.out.print("Keuze: ");
 
             switch (scanner.nextLine()){
                 case "1" -> registreerAbonnement();
                 case "2" -> toonAlleAbonnementen();
+                case "3" -> zoekAbonnementOpId();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -194,6 +201,26 @@ public class Main {
                         a.getId(), a.getType(), a.getLidId(), a.getMaandelijkseKosten());
             }
         } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void zoekAbonnementOpId() {
+        try {
+            System.out.print("\nAbonnement ID: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            Abonnement abonnement = abonnementservice.getAbonnementById(id);
+
+            if (abonnement == null) {
+                System.out.println("Geen abonnement gevonden met dit ID!");
+                return;
+            }
+
+            System.out.printf("\n--- ABONNEMENT %d ---\n", id);
+            System.out.println("Type: " + abonnement.getType());
+            System.out.println("Lid ID: " + abonnement.getLidId());
+            System.out.printf("Kosten: €%.2f p/maand\n", abonnement.getMaandelijkseKosten());
+            System.out.println("Geldig van: " + abonnement.getStartdatum() + " tot " + abonnement.getEinddatum());
+        }  catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }
     }
