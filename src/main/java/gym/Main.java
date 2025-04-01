@@ -158,6 +158,7 @@ public class Main {
                 case "1" -> registreerAbonnement();
                 case "2" -> toonAlleAbonnementen();
                 case "3" -> zoekAbonnementOpId();
+                case "4" -> zoekAbonnementOpLidId();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -221,6 +222,25 @@ public class Main {
             System.out.printf("Kosten: €%.2f p/maand\n", abonnement.getMaandelijkseKosten());
             System.out.println("Geldig van: " + abonnement.getStartdatum() + " tot " + abonnement.getEinddatum());
         }  catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void zoekAbonnementOpLidId() {
+        try {
+            System.out.print("\nLid ID: ");
+            int lidId = Integer.parseInt(scanner.nextLine());
+            Abonnement abonnement = abonnementservice.getAbonnementByLidId(lidId);
+
+            if (abonnement == null) {
+                System.out.println("Dit lid heeft geen abonnement!");
+                return;
+            }
+
+            System.out.printf("\n--- ABONNEMENT VAN LID %d ---\n", lidId);
+            System.out.println("Type: " + abonnement.getType());
+            System.out.printf("Kosten: €%.2f p/maand\n", abonnement.getMaandelijkseKosten());
+            System.out.println("Einddatum: " + abonnement.getEinddatum());
+        } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }
     }

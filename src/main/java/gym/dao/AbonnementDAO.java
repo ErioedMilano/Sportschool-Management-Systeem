@@ -78,4 +78,27 @@ public class AbonnementDAO {
         }
         return null;
     }
+    // READ (by Lid ID)
+    public Abonnement getAbonnementByLidId(int lidId) throws SQLException {
+
+        String sql = "SELECT * FROM abonnementen WHERE lid_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setInt(1, lidId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Abonnement(
+                            resultSet.getString("type"),
+                            resultSet.getDouble("maandelijkse_kosten"),
+                            resultSet.getDate("startdatum").toLocalDate(),
+                            resultSet.getDate("einddatum").toLocalDate(),
+                            resultSet.getInt("lid_id")
+                    );
+                }
+            }
+        }
+        return null;
+    }
 }

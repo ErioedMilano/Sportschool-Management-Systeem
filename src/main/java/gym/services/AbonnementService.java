@@ -36,6 +36,14 @@ public class AbonnementService {
             return null;
         }
     }
+    public Abonnement getAbonnementByLidId(int lidId) {
+        try {
+            return abonnementDAO.getAbonnementByLidId(lidId);
+        } catch (SQLException e) {
+            System.err.println("Databasefout: " + e.getMessage());
+            return null;
+        }
+    }
     private void handleError(String message, SQLException e) {
         System.err.println(message + ": " + e.getMessage());
     }
