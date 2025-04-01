@@ -34,6 +34,7 @@ public class Main {
                 case "1" -> beheerLeden();
                 case "2" -> beheerAbonnomenten();
                 case "3" -> beheerLessen();
+                case "4" -> beheerMedewerkers();
                 case "5" -> running = false;
                 default -> System.out.println("ongeldige keuze");
             }
@@ -45,6 +46,7 @@ public class Main {
         System.out.println("1. Ledenbeheer");
         System.out.println("2. Abonnementenbeheer");
         System.out.println("3. Lesbeheer");
+        System.out.println("4. Medewerkersbeheer");
         System.out.println("5. Afsluiten");
         System.out.print("Maak uw keuze: ");
     }
@@ -443,6 +445,100 @@ public class Main {
 
             lesService.verwijderUitLes(lidId, lesId);
             System.out.println("\nUitschrijving succesvol!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    // =============== MEDEWERKERBEHEER ===============
+    private static void beheerMedewerkers() {
+        boolean terug = false;
+        while (!terug) {
+            System.out.println("\n--- MEDEWERKERBEHEER ---");
+            System.out.println("1. Nieuwe medewerker");
+            System.out.println("2. Medewerkers tonen");
+            System.out.println("3. Medewerker wijzigen");
+            System.out.println("4. Medewerker verwijderen");
+            System.out.println("5. Terug naar hoofdmenu");
+            System.out.print("Keuze: ");
+
+            switch (scanner.nextLine()) {
+                case "1" -> registreerMedewerker();
+                case "2" -> toonMedewerkers();
+                case "3" -> wijzigMedewerker();
+                case "4" -> verwijderMedewerker();
+                case "5" -> terug = true;
+                default -> System.out.println("Ongeldige keuze!");
+            }
+        }
+    }
+
+    private static void registreerMedewerker() {
+        try {
+            System.out.print("\nNaam: ");
+            String naam = scanner.nextLine();
+
+            System.out.print("Functie: ");
+            String functie = scanner.nextLine();
+
+            Medewerker medewerker = new Medewerker(naam, functie);
+            medewerkerService.registreerMedewerker(medewerker);
+            System.out.println("\nMedewerker succesvol geregistreerd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    private static void toonMedewerkers() {
+        try {
+            List<Medewerker> medewerkers = medewerkerService.getAllMedewerkers();
+            if (medewerkers.isEmpty()) {
+                System.out.println("\nGeen medewerkers gevonden.");
+                return;
+            }
+            System.out.println("\n--- ALLE MEDEWERKERS ---");
+            for (Medewerker m : medewerkers) {
+                System.out.printf("ID: %d | Naam: %s | Functie: %s%n",
+                        m.getId(), m.getNaam(), m.getFunctie());
+            }
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    private static void wijzigMedewerker() {
+        try {
+            System.out.print("\nMedewerker ID: ");
+            int id = leesInt();
+
+            Medewerker medewerker = medewerkerService.getMedewerkerById(id);
+            if (medewerker == null) {
+                System.out.println("\nMedewerker niet gevonden!");
+                return;
+            }
+
+            System.out.print("Nieuwe naam: ");
+            medewerker.setNaam(scanner.nextLine());
+
+            System.out.print("Nieuwe functie: ");
+            medewerker.setFunctie(scanner.nextLine());
+
+            medewerkerService.updateMedewerker(medewerker);
+            System.out.println("\nMedewerker gewijzigd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+
+    private static void verwijderMedewerker() {
+        try {
+            System.out.print("\nMedewerker ID: ");
+            int id = leesInt();
+
+            System.out.print("Weet u het zeker? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                medewerkerService.verwijderMedewerker(id);
+                System.out.println("\nMedewerker verwijderd!");
+            }
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }
