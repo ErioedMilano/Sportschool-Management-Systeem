@@ -101,4 +101,21 @@ public class AbonnementDAO {
         }
         return null;
     }
+    // UPDATE
+    public void updateAbonnement(Abonnement abonnement) throws SQLException {
+
+        String sql = "UPDATE abonnementen SET type=?, maandelijkse_kosten=?, startdatum=?, einddatum=? WHERE id=?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, abonnement.getType());
+            statement.setDouble(2, abonnement.getMaandelijkseKosten());
+            statement.setDate(3, Date.valueOf(abonnement.getStartdatum()));
+            statement.setDate(4, Date.valueOf(abonnement.getEinddatum()));
+            statement.setInt(5, abonnement.getId());
+
+            statement.executeUpdate();
+        }
+    }
 }

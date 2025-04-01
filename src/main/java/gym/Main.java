@@ -159,6 +159,7 @@ public class Main {
                 case "2" -> toonAlleAbonnementen();
                 case "3" -> zoekAbonnementOpId();
                 case "4" -> zoekAbonnementOpLidId();
+                case "5" -> wijzigAbonnement();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -240,6 +241,42 @@ public class Main {
             System.out.println("Type: " + abonnement.getType());
             System.out.printf("Kosten: €%.2f p/maand\n", abonnement.getMaandelijkseKosten());
             System.out.println("Einddatum: " + abonnement.getEinddatum());
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void wijzigAbonnement() {
+        try {
+            System.out.print("\nAbonnement ID: ");
+            int id = leesInt();
+
+            Abonnement abonnement = abonnementservice.getAbonnementById(id);
+
+            if (abonnement == null) {
+                System.out.println("\nAbonnement niet gevonden!");
+                return;
+            }
+
+            System.out.print("Nieuw type (BASIC/PREMIUM): ");
+            String type = scanner.nextLine();
+
+            System.out.print("Nieuwe maandelijkse kosten: ");
+            double kosten = leesDouble();
+
+            System.out.print("Nieuwe startdatum (jjjj-mm-dd): ");
+            LocalDate start = leesDatum();
+
+            System.out.print("Nieuwe einddatum (jjjj-mm-dd): ");
+            LocalDate eind = leesDatum();
+
+            abonnement.setType(type);
+            abonnement.setMaandelijkseKosten(kosten);
+            abonnement.setStartdatum(start);
+            abonnement.setEinddatum(eind);
+
+            abonnementservice.wijzigAbonnement(abonnement);
+
+            System.out.println("\nAbonnement succesvol gewijzigd!");
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }

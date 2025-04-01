@@ -36,7 +36,7 @@ public class AbonnementService {
             return null;
         }
     }
-    public Abonnement getAbonnementByLidId(int lidId) {
+    public Abonnement getAbonnementByLidId(int lidId){
         try {
             return abonnementDAO.getAbonnementByLidId(lidId);
         } catch (SQLException e) {
@@ -44,8 +44,27 @@ public class AbonnementService {
             return null;
         }
     }
+    public void wijzigAbonnement(Abonnement abonnement){
+        try {
+            validateAbonnement(abonnement);
+            abonnementDAO.updateAbonnement(abonnement);
+            System.out.println("Abonnement succesvol gewijzigd!");
+        } catch (IllegalArgumentException e) {
+            System.err.println("Validatiefout: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Databasefout: " + e.getMessage());
+        }
+    }
     private void handleError(String message, SQLException e) {
         System.err.println(message + ": " + e.getMessage());
+    }
+    private void validateAbonnement(Abonnement abonnement) {
+        if (abonnement.getStartdatum().isAfter(abonnement.getEinddatum())) {
+            throw new IllegalArgumentException("Startdatum moet voor einddatum liggen!");
+        }
+        if (abonnement.getMaandelijkseKosten() <= 0) {
+           throw new IllegalArgumentException("Kosten moeten positief zijn!");
+        }
     }
 }
 
