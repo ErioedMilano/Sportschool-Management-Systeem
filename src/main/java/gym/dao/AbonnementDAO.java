@@ -118,4 +118,16 @@ public class AbonnementDAO {
             statement.executeUpdate();
         }
     }
+    // DELETE
+    public void deleteAbonnement(int id) throws SQLException {
+
+        String sql = "DELETE FROM abonnementen WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        }
+    }
 }

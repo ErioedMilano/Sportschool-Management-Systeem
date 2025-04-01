@@ -55,6 +55,14 @@ public class AbonnementService {
             System.err.println("Databasefout: " + e.getMessage());
         }
     }
+    public void verwijderAbonnement(int id) {
+        try {
+            abonnementDAO.deleteAbonnement(id);
+            System.out.println("Abonnement verwijderd!");
+        } catch (SQLException e) {
+            System.err.println("Databasefout: " + e.getMessage());
+        }
+    }
     private void handleError(String message, SQLException e) {
         System.err.println(message + ": " + e.getMessage());
     }

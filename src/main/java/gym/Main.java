@@ -160,6 +160,7 @@ public class Main {
                 case "3" -> zoekAbonnementOpId();
                 case "4" -> zoekAbonnementOpLidId();
                 case "5" -> wijzigAbonnement();
+                case "6" -> verwijderAbonnement();
                 case "7" -> terug = true;
                 default -> System.out.println("Ongeldige keuze!");
             }
@@ -277,6 +278,20 @@ public class Main {
             abonnementservice.wijzigAbonnement(abonnement);
 
             System.out.println("\nAbonnement succesvol gewijzigd!");
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    private static void verwijderAbonnement() {
+        try {
+            System.out.print("\nAbonnement ID: ");
+            int id = leesInt();
+
+            System.out.print("Weet u het zeker? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                abonnementservice.verwijderAbonnement(id);
+                System.out.println("\nAbonnement verwijderd!");
+            }
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }
