@@ -2,10 +2,13 @@ package gym;
 
 import gym.models.*;
 import gym.services.AbonnementService;
+import gym.services.LesService;
 import gym.services.LidService;
+import gym.services.MedewerkerService;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +17,8 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final LidService lidService = new LidService();
     private static final AbonnementService abonnementservice = new AbonnementService();
+    private static final LesService lesService = new LesService();
+    private static final MedewerkerService medewerkerService = new MedewerkerService();
 
     public static void main(String[] args){
 
@@ -27,6 +32,7 @@ public class Main {
             switch (keuze){
                 case "1" -> beheerLeden();
                 case "2" -> beheerAbonnomenten();
+                case "3" -> beheerLessen();
                 case "5" -> running = false;
                 default -> System.out.println("ongeldige keuze");
             }
@@ -37,6 +43,7 @@ public class Main {
         System.out.println("\n***SPORTSCHOOL-BEHEERSYSTEEM***");
         System.out.println("1. Ledenbeheer");
         System.out.println("2. Abonnementenbeheer");
+        System.out.println("3. Lesbeheer");
         System.out.println("5. Afsluiten");
         System.out.print("Maak uw keuze: ");
     }
@@ -292,6 +299,51 @@ public class Main {
                 abonnementservice.verwijderAbonnement(id);
                 System.out.println("\nAbonnement verwijderd!");
             }
+        } catch (Exception e) {
+            System.out.println("\nFout: " + e.getMessage());
+        }
+    }
+    // =============== LESBEHEER ===============
+    private static void beheerLessen() {
+
+        boolean terug = false;
+        while (!terug){
+
+            System.out.println("\n--- LESBEHEER ---");
+            System.out.println("1. Nieuwe les plannen");
+            System.out.println("2. Alle lessen tonen");
+            System.out.println("3. Les wijzigen");
+            System.out.println("4. Les annuleren");
+            System.out.println("5. Lid inschrijven");
+            System.out.println("6. Lid uitschrijven");
+            System.out.println("7. Terug naar hoofdmenu");
+            System.out.print("Keuze: ");
+
+            switch (scanner.nextLine()){
+                case "1" -> planLes();
+                case "7" -> terug = true;
+                default -> System.out.println("Ongeldige keuze!");
+            }
+        }
+    }
+    private static void planLes() {
+        try {
+            System.out.print("\nLesnaam: ");
+            String naam = scanner.nextLine();
+
+            System.out.print("Datum/tijd (jjjj-mm-ddTHH:mm): ");
+            LocalDateTime tijd = LocalDateTime.parse(scanner.nextLine());
+
+            System.out.print("Capaciteit: ");
+            int capaciteit = leesInt();
+
+            System.out.print("Medewerker ID: ");
+            int medewerkerId = leesInt();
+
+            Les les = new Les(naam, tijd, capaciteit);
+
+            lesService.planLes(les, medewerkerId);
+            System.out.println("\nLes succesvol gepland!");
         } catch (Exception e) {
             System.out.println("\nFout: " + e.getMessage());
         }

@@ -1,15 +1,16 @@
 package gym.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Les {
     private int id;
     private String naam;
-    private LocalDate tijdslot;
+    private LocalDateTime tijdslot;
     private int capaciteit;
     private Medewerker medewerker;
 
-    Les(int id,String naam,LocalDate tijdslot,int capaciteit,Medewerker medewerker){
+    public Les(String naam,LocalDateTime tijdslot,int capaciteit){
         this.id = id;
         this.naam = naam;
         this.tijdslot = tijdslot;
@@ -28,10 +29,10 @@ public class Les {
     public void setNaam(String naam){
         this.naam = naam;
     }
-    public LocalDate getTijdslot(){
+    public LocalDateTime getTijdslot(){
         return tijdslot;
     }
-    public void setTijdslot(LocalDate tijdslot){
+    public void setTijdslot(LocalDateTime tijdslot){
         this.tijdslot = tijdslot;
     }
     public int getCapaciteit(){
