@@ -410,8 +410,8 @@ public class Main {
             System.out.print("\nLes ID: ");
             int id = leesInt();
 
-            System.out.print("Weet u het zeker? (j/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("j")) {
+            System.out.print("Weet u het zeker? (ja/nee): ");
+            if (scanner.nextLine().equalsIgnoreCase("ja")) {
                 lesService.annuleerLes(id);
                 System.out.println("\nLes geannuleerd!");
             }
