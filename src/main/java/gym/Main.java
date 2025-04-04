@@ -534,8 +534,8 @@ public class Main {
             System.out.print("\nMedewerker ID: ");
             int id = leesInt();
 
-            System.out.print("Weet u het zeker? (j/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("j")) {
+            System.out.print("Weet u het zeker? (ja/nee): ");
+            if (scanner.nextLine().equalsIgnoreCase("ja")) {
                 medewerkerService.verwijderMedewerker(id);
                 System.out.println("\nMedewerker verwijderd!");
             }
