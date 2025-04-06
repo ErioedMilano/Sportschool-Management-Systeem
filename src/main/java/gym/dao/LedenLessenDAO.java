@@ -23,7 +23,7 @@ public class LedenLessenDAO {
             statement.executeUpdate();
         }
     }
-    // READ (leden per les)
+    // READ (Leden per les)
     public List<Integer> getIngeschrevenLeden(int lesId) throws SQLException {
 
         List<Integer> ledenIds = new ArrayList<>();
