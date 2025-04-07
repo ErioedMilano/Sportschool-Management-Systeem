@@ -50,6 +50,7 @@ public class Main {
         System.out.println("5. Afsluiten");
         System.out.print("Maak uw keuze: ");
     }
+
     //**********Ledenbeheer**********
     private static void beheerLeden(){
 
